@@ -1,8 +1,8 @@
 extends KinematicBody2D
 
-export(float) var MAX_SPEED := 2.0
-export(float) var ACCELERATION_MAGNITUDE := 10.0
-export(float) var DEACCELERATION_MAGNITUDE := 15.0 
+export(float) var MAX_SPEED := 2.5
+export(float) var ACCELERATION_MAGNITUDE := 15
+export(float) var DEACCELERATION_MAGNITUDE := 20 
 
 var velocity = Vector2.ZERO
 
@@ -13,10 +13,10 @@ func _physics_process(dt: float) -> void:
 	).normalized()	
 	
 	if direction_unit_vector != Vector2.ZERO:
-		var dv := direction_unit_vector * (ACCELERATION_MAGNITUDE * dt)
-		velocity += dv
-		velocity = velocity.clamped(MAX_SPEED)
+		velocity = velocity.move_toward(direction_unit_vector * MAX_SPEED, ACCELERATION_MAGNITUDE * dt)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, DEACCELERATION_MAGNITUDE * dt)
 	
-	move_and_collide(velocity)
+	var obj : KinematicCollision2D = move_and_collide(velocity)
+	if (obj != null):
+		velocity = obj.collider_velocity

@@ -35,7 +35,7 @@ var direction_unit_vector := Vector2(
 Frame independent change in velocity:
 
 ```gdscript
-export(float) var MAX_SPEED := 2.0
+export(float) var MAX_SPEED := 2.5
 export(float) var ACCELERATION_MAGNITUDE := 10.0
 export(float) var DEACCELERATION_MAGNITUDE := 15.0 
 
@@ -48,13 +48,13 @@ func _physics_process(dt: float) -> void:
 	).normalized()	
 	
 	if direction_unit_vector != Vector2.ZERO:
-		var dv := direction_unit_vector * (ACCELERATION_MAGNITUDE * dt)
-		velocity += dv
-		velocity = velocity.clamped(MAX_SPEED)
+		velocity = velocity.move_toward(direction_unit_vector * MAX_SPEED, ACCELERATION_MAGNITUDE * dt)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, DEACCELERATION_MAGNITUDE * dt)
 	
-	move_and_collide(velocity)
+	var obj : KinematicCollision2D = move_and_collide(velocity)
+	if (obj != null):
+		velocity = obj.collider_velocity
 ```
 
 Refer Chapter 4 of https://salmanisaleh.files.wordpress.com/2019/02/fundamentals-of-physics-textbook.pdf
@@ -68,3 +68,9 @@ OR
 
 => final velocity = initial velocity + acceleration * delta-time
 ```
+
+## Chapter 3: Collision Physics
+
+First step is to add a `CollisionShape2D` for the movement to the player node. It should look something like this:
+
+![movement collision shape](img/chapter3movementcollisionshape.png "movement collision shape")
