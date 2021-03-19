@@ -153,3 +153,39 @@ func _update_player_animation() -> void:
 Here is the basic movement demo:
 
 ![basic movement](img/chapter5playerbasicmovementanimation.gif "basic movement")
+
+
+## Chapter 6: Animation Trees - 2
+
+Animation in each direction can be elegantly coded with an `AnimationTree` node to replace the code written in previous chapter.
+Therefore, create a new child node `AnimationTree` for `Player` and set the `anim_player` property to `AnimationPlayer` node and `tree_root` to a `AnimationNodeStateMachine` and enable the `active` property.
+
+Then add 2 `BlendSpace2D` for Idle and Run.
+
+![blend space 2d](img/chapter6blendspacerunandidle.png "blend space 2d")
+![idle blend space 2d](img/chapter6idleblendspace2d.png "idle blend space 2d")
+
+```gscript
+onready var animation_player : AnimationPlayer = $AnimationPlayer
+onready var animation_tree : AnimationTree = $AnimationTree
+onready var animation_state = animation_tree.get("parameters/playback")
+
+func _physics_process(dt: float) -> void:
+	var direction_unit_vector := Vector2(
+		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
+		Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
+	).normalized()	
+		
+	if direction_unit_vector != Vector2.ZERO:
+		animation_tree.set("parameters/Idle/blend_position", direction_unit_vector)
+		animation_tree.set("parameters/Run/blend_position", direction_unit_vector)
+		animation_state.travel("Run")
+		velocity = velocity.move_toward(direction_unit_vector * MAX_SPEED, ACCELERATION_MAGNITUDE * dt)
+	else:
+		animation_state.travel("Idle")		
+		velocity = velocity.move_toward(Vector2.ZERO, DEACCELERATION_MAGNITUDE * dt)
+	
+	var obj : KinematicCollision2D = move_and_collide(velocity)
+	if (obj != null):
+		velocity = obj.collider_velocity
+```
