@@ -165,7 +165,7 @@ Then add 2 `BlendSpace2D` for Idle and Run.
 ![blend space 2d](img/chapter6blendspacerunandidle.png "blend space 2d")
 ![idle blend space 2d](img/chapter6idleblendspace2d.png "idle blend space 2d")
 
-```gscript
+```gdscript
 onready var animation_player : AnimationPlayer = $AnimationPlayer
 onready var animation_tree : AnimationTree = $AnimationTree
 onready var animation_state = animation_tree.get("parameters/playback")
