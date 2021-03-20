@@ -209,5 +209,16 @@ Finally draw some tiles on the level.
 
 ![making tiles](img/chapter7makingtileswithautotile.png "making tiles")
 
+
+Create another autotile set for cliff. Call it `CliffTileMap`.
 Next step is to set some collisions with tile map.
 
+![bitmask for dirt autotile](img/chapter7bitmaskfordirtautotile.png "bitmask for dirt autotile")
+
+The bitmask for tile set follows same pattern. Then set the collision shapes to the autotiles to enable the collisions.
+
+![collision shape for dirt autotile](img/chapter7setcollisionshapetotiles.png "collision shape for dirt autotile")
+
+Here is the demo:
+
+![collision with cliff](img/chapter7dirttilescollisiondemo.gif "collision with cliff")
