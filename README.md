@@ -222,3 +222,80 @@ The bitmask for tile set follows same pattern. Then set the collision shapes to 
 Here is the demo:
 
 ![collision with cliff](img/chapter7dirttilescollisiondemo.gif "collision with cliff")
+
+
+## Chapter 8: Animating Attack
+
+Create 4 basic attack animations and add them to the animation tree in a `BlendShape2D` node.
+Also, add animation callbacks to `attack_move_finished()` function to change the player state variable. (refer the code)
+
+
+![attack state in animation tree](img/chapter8attackstateinanimationtree.png "attack state in animation tree")
+
+![animation callback](img/chapter8animationcallbacks.png "animation callback")
+
+
+```gdscript
+enum State {
+	MOVE,
+	ROLL,
+	ATTACK
+}
+
+onready var animation_player : AnimationPlayer = $AnimationPlayer
+onready var animation_tree : AnimationTree = $AnimationTree
+onready var animation_state = animation_tree.get("parameters/playback")
+onready var player_state = State.MOVE
+
+
+func _ready() -> void:
+	animation_tree.active = true
+
+
+func _physics_process(dt: float) -> void:
+	match player_state:
+		State.MOVE:
+			move_state(dt)
+				
+		State.ROLL:
+			pass
+		
+		State.ATTACK:
+			attack_state()
+
+
+func move_state(dt) -> void:
+	var direction_unit_vector := Vector2(
+		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
+		Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
+	).normalized()	
+		
+	if direction_unit_vector != Vector2.ZERO:
+		animation_tree.set("parameters/Idle/blend_position", direction_unit_vector)
+		animation_tree.set("parameters/Run/blend_position", direction_unit_vector)
+		animation_tree.set("parameters/Attack/blend_position", direction_unit_vector)
+		animation_state.travel("Run")
+		velocity = velocity.move_toward(direction_unit_vector * MAX_SPEED, ACCELERATION_MAGNITUDE * dt)
+	else:
+		animation_state.travel("Idle")		
+		velocity = velocity.move_toward(Vector2.ZERO, DEACCELERATION_MAGNITUDE * dt)
+	
+	var obj : KinematicCollision2D = move_and_collide(velocity)
+	if (obj != null):
+		velocity = obj.collider_velocity
+
+	if Input.is_action_just_pressed("attack"):
+		player_state = State.ATTACK
+
+
+func attack_state() -> void:
+	velocity = Vector2.ZERO
+	animation_state.travel("Attack")
+
+
+func attack_move_finished() -> void:
+	player_state = State.MOVE
+
+```
+
+![attack animation demo](img/chapter8attackdemo.gif "attack animation demo")
