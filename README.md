@@ -209,3 +209,5 @@ Finally draw some tiles on the level.
 
 ![making tiles](img/chapter7makingtileswithautotile.png "making tiles")
 
+Next step is to set some collisions with tile map.
+
