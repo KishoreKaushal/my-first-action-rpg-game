@@ -189,3 +189,23 @@ func _physics_process(dt: float) -> void:
 	if (obj != null):
 		velocity = obj.collider_velocity
 ```
+
+## Chapter 7: Autotile
+
+Change the type of `World` node back to node 2D and create a separate child `YSort` node and drag the player and bush nodes as child of `YSort`.
+
+First task is to set the background grass. There are 2 methods to add a texture background.
+
+1. By using the sprite texture region method (prefer this method)
+2. By using TextureRect (not preferred)
+
+![background sprite](img/chapter7backgroundsprite.png "background sprite")
+
+Add a new `TileMap` node and set autotiles. Use the following bitmap mask.
+
+![autotile bitmask](img/chapter7autotilebitmask.png "autotile bitmask")
+
+Finally draw some tiles on the level.
+
+![making tiles](img/chapter7makingtileswithautotile.png "making tiles")
+
