@@ -299,3 +299,32 @@ func attack_move_finished() -> void:
 ```
 
 ![attack animation demo](img/chapter8attackdemo.gif "attack animation demo")
+
+
+## Chapter 9 : Grass Death Effect & Instancing
+
+First, make all the `Bush` node the child of another `YSort` node called `Bushes`.
+
+![Bushes YSort node](img/chapter9bushesysortnode.png "Bushes YSort node")
+
+Create a grass scene from a `Node2D` scene. Drop some grass to the world. And attach a script `Grass.gd` to it.
+Now we need to create a grass death effect from a `Node2D` scene. To the grass death effect add animated sprite node with grass effect sprite sheet.
+
+![Grass Effect](img/chapter9grasseffect.png "Grass Effect")
+
+Then add code for instancing the grass effect on runtime in `Grass.gd`.
+
+```gdscript
+func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed("attack"):
+		var GrassEffectScene : PackedScene = load("res://Effects/GrassEffect.tscn")
+		var grass_effect = GrassEffectScene.instance()
+		var world = get_tree().current_scene
+		world.add_child(grass_effect)
+		grass_effect.global_position = global_position
+		queue_free()
+
+```
+
+The above code illustrates the instancing during runtime. The solution is not complete as the hurtboxes and hitboxes are not implemented yet.
+
