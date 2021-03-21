@@ -328,3 +328,29 @@ func _physics_process(delta: float) -> void:
 
 The above code illustrates the instancing during runtime. The solution is not complete as the hurtboxes and hitboxes are not implemented yet.
 
+
+## Chapter 10 : Hurtboxes and Hitboxes
+
+First, create a following layers in the `Project Settings > Layer Names > 2d Physics`.
+
+![Project Layers](img/chapter10projectlayers.png "Project Layers")
+
+Create 2 `Area2D` scenes with a `CollisionShape2D` child node with name `Hurtbox` and `Hitbox`.
+
+Then drop a `Hurtbox` instance to the `Grass` scene and enable editable children and add a rectangle collision shape.
+
+For, the player we need to add the `Hitbox` scene which will be rotate when different animation is played.
+
+![Player Sword Attack Right Hitbox](img/chapter10playerswordattackrighthitbox.png "Player Sword Attack Right Hitbox")
+
+Then key `CollisionShape2D > rotation_degrees` property to beginning of each animation with appropriate rotation. For eg. here is for attack down.
+
+![AttackDown Rotation Degree Keyframe](img/chapter10rotationkey.gif "AttackDown Rotation Degree Keyframe")
+
+Similarly, enable the collision shape at the middle of the attack, and disable the collision shape at the end of the attack. (By default, keep it disabled.)
+
+![Animate Collision Shape Enable/Disable](img/chapter10collisionshapeenabledisable.png "Animate Collision Shape Enable/Disable")
+
+Finally set the appropriate `collision_mask` and `collision_layer` property for different nodes.
+
+![Demo](img/chapter10demo.gif "Demo")
