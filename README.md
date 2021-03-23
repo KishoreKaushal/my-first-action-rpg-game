@@ -328,7 +328,6 @@ func _physics_process(delta: float) -> void:
 
 The above code illustrates the instancing during runtime. The solution is not complete as the hurtboxes and hitboxes are not implemented yet.
 
-
 ## Chapter 10 : Hurtboxes and Hitboxes
 
 First, create a following layers in the `Project Settings > Layer Names > 2d Physics`.
@@ -354,3 +353,21 @@ Similarly, enable the collision shape at the middle of the attack, and disable t
 Finally set the appropriate `collision_mask` and `collision_layer` property for different nodes.
 
 ![Demo](img/chapter10demo.gif "Demo")
+
+## Chapter 11 : Roll State
+
+Similiar to previous chapter add 4 basic roll animations along with a `BlendSpace2D` which is connected to `Idle` state.
+
+Also, created a callback function `roll_animation_finished()`.
+
+![Roll BlendSpace2D](img/chapter11rollblendspace2d.png "Roll BlendSpace2D")
+
+Then add code to change the `blend_position` using `direction_vector`.
+
+```gdscript
+animation_tree.set("parameters/Roll/blend_position", direction_unit_vector)
+```
+
+Define a new function called `roll_state()`.
+
+![Roll Demo](img/chapter11rolldemo.gif "Roll Demo")
