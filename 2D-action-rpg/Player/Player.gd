@@ -19,12 +19,15 @@ var roll_direction_unit_vector = Vector2.LEFT
 
 onready var animation_player : AnimationPlayer = $AnimationPlayer
 onready var animation_tree : AnimationTree = $AnimationTree
+onready var sword_hitbox : Area2D = $HitboxPivot/SwordHitbox
+
 onready var animation_state = animation_tree.get("parameters/playback")
 onready var player_state = State.MOVE
 
 
 func _ready() -> void:
 	animation_tree.active = true
+	sword_hitbox.knockback_vector = roll_direction_unit_vector
 
 
 func _physics_process(dt: float) -> void:
@@ -54,6 +57,7 @@ func move_state(dt) -> void:
 		
 	if input_direction_unit_vector != Vector2.ZERO:
 		roll_direction_unit_vector = input_direction_unit_vector
+		sword_hitbox.knockback_vector = roll_direction_unit_vector
 		animation_tree.set("parameters/Idle/blend_position", input_direction_unit_vector)
 		animation_tree.set("parameters/Run/blend_position", input_direction_unit_vector)
 		animation_tree.set("parameters/Attack/blend_position", input_direction_unit_vector)

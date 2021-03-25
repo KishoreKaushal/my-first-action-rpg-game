@@ -371,3 +371,48 @@ animation_tree.set("parameters/Roll/blend_position", direction_unit_vector)
 Define a new function called `roll_state()`.
 
 ![Roll Demo](img/chapter11rolldemo.gif "Roll Demo")
+
+## Chapter 12: Enemy Bat
+
+Create a `KinematicBody2D` and name it `Bat`.
+Add a `Shadow` sprite node and an `AnimatedSprite` for wings flap animation.
+Add `CollisionShape2D` near the shadow which will collide with player's foot collision shape.
+Rename the 5th 2D physics layer as `Enemy` in the project settings.
+Then change the bat `collision_layer` property to `Enemy` layer.
+Then add a `Hurtbox` with capsule collision shape.
+Change the `Hurtbox > collision_layer` to `EnemyHurtbox` layer.
+Then connect the `area_entered(area:Area2D)` signal for `Hurtbox`.
+
+Let's add basic code for knocking the bat in right direction (+ve x axis direction).
+
+```gdscript
+export(float) var MAX_SPEED := 1
+export(float) var ACCELERATION_MAGNITUDE := 10
+export(float) var KNOCKBACK_MULTIPLIER := 3.5
+
+var knockback_velocity:Vector2 = Vector2.ZERO
+
+func _physics_process(dt: float) -> void:
+	knockback_velocity = knockback_velocity.move_toward(Vector2.ZERO, ACCELERATION_MAGNITUDE * dt)
+	var obj : KinematicCollision2D = move_and_collide(knockback_velocity)
+	if (obj != null):
+		knockback_velocity = obj.collider_velocity
+
+func _on_Hurtbox_area_entered(area: Area2D) -> void:
+	knockback_velocity = Vector2.RIGHT * KNOCKBACK_MULTIPLIER
+```
+
+Let's modify the above code for knocking back to any of the 4 direction (UP, DOWN, LEFT, RIGHT).
+To do this we need to store the sword hit knockback vector and update this exactly similar to roll direction vector.
+
+Then the `_on_Hurtbox_area_entered(area)` function will be modified like this:
+
+```gdscript
+func _on_Hurtbox_area_entered(area: Area2D) -> void:
+	if area.knockback_vector:
+		knockback_velocity = area.knockback_vector * KNOCKBACK_MULTIPLIER
+```
+
+Final Demo:
+
+![Knockback Demo](img/Chapter12knockbackdemo.gif "Knockback Demo")
