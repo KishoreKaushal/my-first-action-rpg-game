@@ -416,3 +416,42 @@ func _on_Hurtbox_area_entered(area: Area2D) -> void:
 Final Demo:
 
 ![Knockback Demo](img/Chapter12knockbackdemo.gif "Knockback Demo")
+
+Now, let's add the enemy health stats.
+
+Create a new basic scene from `Node` and name it `Stats`.
+
+Attach a script to `Stats` scene.
+
+```gdscript
+# File: Stats.gd
+extends Node
+
+export(int) var MAX_HEALTH := 1
+
+onready var health : int = MAX_HEALTH setget set_health
+
+signal no_health
+
+func set_health(value) -> void:
+	health = value
+	if health == 0:
+		emit_signal("no_health")
+```
+
+Then attach a signal handler for `no_health` in `Bat.gd`. Also, modify the `_on_Hurtbox_area_entered(area)` signal handler to reduce the health of enemy.
+
+```
+func _on_Hurtbox_area_entered(area: Area2D) -> void:
+	if area.knockback_vector:
+		stats.health -= 1 
+		knockback_velocity = area.knockback_vector * KNOCKBACK_MULTIPLIER
+
+
+func _on_Stats_no_health() -> void:
+	queue_free()
+```
+
+Damage variable for sword. Attach a script to `Hitbox` and export a damage variable. Then extend this code in sword hitbox code.
+
+Then finally, use this damage var to update the health.
