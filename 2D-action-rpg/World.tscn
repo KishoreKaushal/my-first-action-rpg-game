@@ -569,7 +569,7 @@ position = Vector2( 128, 144 )
 [node name="Grass12" parent="YSort/Grass" instance=ExtResource( 6 )]
 position = Vector2( 128, 128 )
 
-[node name="Enemies" type="Node" parent="YSort"]
+[node name="Enemies" type="YSort" parent="YSort"]
 
 [node name="Bat" parent="YSort/Enemies" instance=ExtResource( 7 )]
 position = Vector2( 264, 92 )

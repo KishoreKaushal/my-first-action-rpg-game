@@ -4,6 +4,8 @@ export(float) var MAX_SPEED := 1
 export(float) var ACCELERATION_MAGNITUDE := 10
 export(float) var KNOCKBACK_MULTIPLIER := 3.5
 
+const EnemyDeathEffectScene : PackedScene = preload("res://Effects/EnemyDeathEffect.tscn")
+
 onready var stats = $Stats
 
 var knockback_velocity:Vector2 = Vector2.ZERO
@@ -26,5 +28,12 @@ func _on_Hurtbox_area_entered(area: Area2D) -> void:
 		knockback_velocity = area.knockback_vector * KNOCKBACK_MULTIPLIER
 
 
+func create_death_effect() -> void:
+	var death_effect = EnemyDeathEffectScene.instance()
+	get_parent().add_child(death_effect)
+	death_effect.global_position = global_position
+
+
 func _on_Stats_no_health() -> void:
+	create_death_effect()
 	queue_free()
