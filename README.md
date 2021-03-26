@@ -413,7 +413,7 @@ func _on_Hurtbox_area_entered(area: Area2D) -> void:
 		knockback_velocity = area.knockback_vector * KNOCKBACK_MULTIPLIER
 ```
 
-Final Demo:
+Knockback Demo:
 
 ![Knockback Demo](img/Chapter12knockbackdemo.gif "Knockback Demo")
 
@@ -455,3 +455,18 @@ func _on_Stats_no_health() -> void:
 Damage variable for sword. Attach a script to `Hitbox` and export a damage variable. Then extend this code in sword hitbox code.
 
 Then finally, use this damage var to update the health.
+
+## Chapter 13: Bat AI
+
+We need to start with creating a `PlayerDetectionZone` scene which will extend the `Area2D` node and has a child `CollisionShape2D` node.
+Attach signal handlers for `body_entered(body)` and `body_exited(body)`.
+Clear all bits for `collision_layer` and `collision_mask` property. Then set the `player` layer bit for `collision_mask`.
+Then add this as child of the `Bat` and add a `Circle` shaped collision shape.
+
+Defining three states for bat: `IDLE`, `WANDER` and `BAT`.
+
+Then add the necessary code for following the player.
+
+Demo:
+
+![Bat AI](img/chapter13batai.gif "Bat AI")
