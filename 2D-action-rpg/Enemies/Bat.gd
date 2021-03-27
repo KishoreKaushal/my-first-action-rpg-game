@@ -1,9 +1,9 @@
 extends KinematicBody2D
 
 export(float) var MAX_SPEED := 0.5
-export(float) var ACCELERATION_MAGNITUDE := 10
+export(float) var ACCELERATION_MAGNITUDE := 2
 export(float) var DEACCELERATION_MAGNITUDE := 1
-export(float) var KNOCKBACK_MULTIPLIER := 3.5
+export(float) var KNOCKBACK_MULTIPLIER := 1.5
 
 const EnemyDeathEffectScene : PackedScene = preload("res://Effects/EnemyDeathEffect.tscn")
 

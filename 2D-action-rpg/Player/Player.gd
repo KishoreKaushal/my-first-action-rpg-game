@@ -20,12 +20,15 @@ var roll_direction_unit_vector = Vector2.LEFT
 onready var animation_player : AnimationPlayer = $AnimationPlayer
 onready var animation_tree : AnimationTree = $AnimationTree
 onready var sword_hitbox : Area2D = $HitboxPivot/SwordHitbox
+onready var stats : Node = $Stats
+onready var hurtbox : Area2D = $Hurtbox
 
 onready var animation_state = animation_tree.get("parameters/playback")
 onready var player_state = State.MOVE
 
 
 func _ready() -> void:
+	stats.connect("no_health", self, "queue_free")
 	animation_tree.active = true
 	sword_hitbox.knockback_vector = roll_direction_unit_vector
 
@@ -96,3 +99,11 @@ func attack_move_finished() -> void:
 
 func roll_animation_finished() -> void:
 	player_state = State.MOVE
+
+
+func _on_Hurtbox_area_entered(area: Area2D) -> void:
+	stats.health -= 1
+	hurtbox.create_hit_effect()
+	hurtbox.start_invincibility()
+
+

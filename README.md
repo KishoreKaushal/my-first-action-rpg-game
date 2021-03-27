@@ -456,7 +456,7 @@ Damage variable for sword. Attach a script to `Hitbox` and export a damage varia
 
 Then finally, use this damage var to update the health.
 
-## Chapter 13: Bat AI
+## Chapter 13: Bat AI and Player Stats
 
 We need to start with creating a `PlayerDetectionZone` scene which will extend the `Area2D` node and has a child `CollisionShape2D` node.
 Attach signal handlers for `body_entered(body)` and `body_exited(body)`.
@@ -470,3 +470,9 @@ Then add the necessary code for following the player.
 Demo:
 
 ![Bat AI](img/chapter13batai.gif "Bat AI")
+
+Then setup the player stats.
+
+Demo:
+
+![Player Death Stats](img/chapter13playerdeathstats.gif "Player Death Stats")
